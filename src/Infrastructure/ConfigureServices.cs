@@ -39,7 +39,8 @@ public static class ConfigureServices
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+            .AddDeveloperSigningCredential();
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
