@@ -1,5 +1,5 @@
 import { Component, TemplateRef, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import {
   TodoListsClient, TodoItemsClient,
@@ -28,13 +28,7 @@ export class TodoComponent implements OnInit {
   listOptionsModalRef: BsModalRef;
   deleteListModalRef: BsModalRef;
   itemDetailsModalRef: BsModalRef;
-  itemDetailsFormGroup = this.fb.group({
-    id: [null],
-    listId: [null],
-    priority: [''],
-    note: [''],
-    backgroundColor: [''],
-  });
+  itemDetailsFormGroup!: FormGroup; 
   colors = [
     { "title": "White", "hex": "#FFFFFF"},
     { "title": "Red", "hex": "#FF0000"},
@@ -44,7 +38,9 @@ export class TodoComponent implements OnInit {
     { "title": "Blue", "hex": "#0000FF"},
     { "title": "Purple", "hex": "#800080"},
     { "title": "Grey", "hex": "#808080" },
-   ];
+  ];
+
+  allTags: string[] = ['#Work', '#Personal', '#Urgent', '#Meeting'];
 
 
   constructor(
@@ -55,11 +51,19 @@ export class TodoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.itemDetailsFormGroup = this.fb.group({
+      id: [null],
+      listId: [null],
+      priority: [''],
+      note: [''],
+      backgroundColor: [''],
+      tag: ['']
+    });
+
     this.listsClient.get().subscribe(
       result => {
         this.lists = result.lists;
         this.priorityLevels = result.priorityLevels;
-        debugger;
         if (this.lists.length) {
           this.selectedList = this.lists[0];
         }
@@ -149,7 +153,6 @@ export class TodoComponent implements OnInit {
 
   // Items
   showItemDetailsModal(template: TemplateRef<any>, item: TodoItemDto): void {
-    debugger;
     this.selectedItem = item;
     this.itemDetailsFormGroup.patchValue(this.selectedItem);
 
@@ -160,7 +163,6 @@ export class TodoComponent implements OnInit {
   }
 
   updateItemDetails(): void {
-    debugger;
     const item = new UpdateTodoItemDetailCommand(this.itemDetailsFormGroup.value);
     this.itemsClient.updateItemDetails(this.selectedItem.id, item).subscribe(
       () => {
@@ -275,4 +277,23 @@ export class TodoComponent implements OnInit {
     this.deleteCountDown = 0;
     this.deleting = false;
   }
+
+  toggleTag(tag: string): void {
+    
+    const selectedTags = this.itemDetailsFormGroup.get('tag')?.value || '';
+        
+    let updatedTags: string[] = selectedTags ? selectedTags.split(',') : [];
+
+    if (updatedTags.includes(tag)) {
+      updatedTags = updatedTags.filter(t => t !== tag);
+    } else {
+      updatedTags.push(tag);
+    }
+    
+    this.itemDetailsFormGroup.patchValue({
+      tag: updatedTags.join(',') 
+    });
+  }
+
+
 }

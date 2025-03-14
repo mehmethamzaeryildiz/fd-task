@@ -135,6 +135,19 @@
           <option [ngValue]="color.hex" *ngFor="let color of colors">{{ color.title }}</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <div class="tag-container">
+          <label *ngFor="let tagItem of allTags" class="tag">
+            <input type="checkbox"
+                   [value]="tagItem"
+                   (change)="toggleTag(tagItem)"
+                   [checked]="itemDetailsFormGroup.get('tag')?.value && itemDetailsFormGroup.get('tag')?.value.includes(tagItem)"
+>
+            <label [for]="tagItem">{{ tagItem }}</label>
+          </label>
+        </div>
+      </div>
     </form>
     <div *ngIf="debug">
       <pre>{{ itemDetailsFormGroup.value | json }}</pre>
