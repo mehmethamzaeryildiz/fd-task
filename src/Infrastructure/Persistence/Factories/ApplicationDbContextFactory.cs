@@ -20,7 +20,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", true)
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
@@ -34,9 +34,26 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             .BuildServiceProvider();
 
         var operationalStoreOptions = serviceProvider.GetRequiredService<IOptions<OperationalStoreOptions>>();
-        var interceptor = serviceProvider.GetRequiredService<AuditableEntitySaveChangesInterceptor>();
-        var currentUserService = serviceProvider.GetRequiredService<ICurrentUserService>();
 
-        return new ApplicationDbContext(optionsBuilder.Options, operationalStoreOptions, null!, interceptor);
+        AuditableEntitySaveChangesInterceptor? interceptor = null;
+        IMediator? mediator = null;
+        ICurrentUserService currentUserService = null;
+        try
+        {
+            interceptor = serviceProvider.GetRequiredService<AuditableEntitySaveChangesInterceptor>();
+            mediator = serviceProvider.GetRequiredService<IMediator>();
+            currentUserService = serviceProvider.GetRequiredService<ICurrentUserService>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        if (interceptor == null)
+        {
+            Console.WriteLine("AuditableEntitySaveChangesInterceptor failed.");
+        }
+
+        return new ApplicationDbContext(optionsBuilder.Options, operationalStoreOptions, mediator!, interceptor);
     }
 }

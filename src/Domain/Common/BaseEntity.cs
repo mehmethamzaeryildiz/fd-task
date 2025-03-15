@@ -25,4 +25,6 @@ public abstract class BaseEntity
     {
         _domainEvents.Clear();
     }
+
+    public bool IsDeleted { get; set; } = false;
 }
