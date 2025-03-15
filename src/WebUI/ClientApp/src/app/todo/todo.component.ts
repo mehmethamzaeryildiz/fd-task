@@ -60,16 +60,30 @@ export class TodoComponent implements OnInit {
       tag: ['']
     });
 
+    this.getList();
+  }
+  public selectedTagFilter: string = '';
+  getList(): void {
     this.listsClient.get().subscribe(
       result => {
         this.lists = result.lists;
         this.priorityLevels = result.priorityLevels;
         if (this.lists.length) {
           this.selectedList = this.lists[0];
+
+          if (this.selectedTagFilter) {
+            this.selectedList.items = this.lists[0].items.filter(x => x.tag && x.tag.includes(this.selectedTagFilter));
+
+          }
         }
       },
       error => console.error(error)
     );
+  }
+
+  onTagFilterChange(event: Event): void {
+    this.selectedTagFilter = (event.target as HTMLSelectElement).value;
+    this.getList();
   }
 
   // Lists
