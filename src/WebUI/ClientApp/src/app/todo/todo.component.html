@@ -37,6 +37,18 @@
           <i class="bi bi-three-dots-vertical"></i>
         </button>
       </div>
+      <div class="clearfix">
+        <h2 class="float-start">Tag Filter</h2>
+        <div class="custom-select-wrapper">
+          <!--<label for="priority">Select Priority</label>-->
+          <div class="custom-select">
+            <select id="tagFilter" name="tagFilter" class="select-input" (change)="onTagFilterChange($event)">
+              <option *ngFor="let tagItem of allTags">{{tagItem}}</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
       <ul id="todo-items" class="list-group mb-2">
         <li class="list-group-item" *ngFor="let item of selectedList.items; index as i"
             [ngStyle]="{'background-color': item.backgroundColor ?? 'white'}"
@@ -134,6 +146,18 @@
         <select class="form-control" formControlName="backgroundColor">
           <option [ngValue]="color.hex" *ngFor="let color of colors">{{ color.title }}</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label>Tags</label>
+        <div class="tag-container">
+          <label *ngFor="let tagItem of allTags" class="tag">
+            <input type="checkbox"
+                   [value]="tagItem"
+                   (change)="toggleTag(tagItem)"
+                   [checked]="itemDetailsFormGroup.get('tag')?.value && itemDetailsFormGroup.get('tag')?.value.includes(tagItem)">
+            {{ tagItem }}
+          </label>
+        </div>
       </div>
     </form>
     <div *ngIf="debug">

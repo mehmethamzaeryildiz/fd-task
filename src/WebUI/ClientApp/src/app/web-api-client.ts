@@ -810,6 +810,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
     title?: string | undefined;
     done?: boolean;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 
     constructor(data?: IUpdateTodoItemCommand) {
         if (data) {
@@ -826,6 +827,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
             this.title = _data["title"];
             this.done = _data["done"];
             this.backgroundColor = _data["backgroundColor"];
+            this.tag = _data["tag"];
         }
     }
 
@@ -842,6 +844,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
         data["title"] = this.title;
         data["done"] = this.done;
         data["backgroundColor"] = this.backgroundColor;
+        data["tag"] = this.tag;
         return data;
     }
 }
@@ -851,6 +854,7 @@ export interface IUpdateTodoItemCommand {
     title?: string | undefined;
     done?: boolean;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 }
 
 export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand {
@@ -859,6 +863,7 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
     priority?: PriorityLevel;
     note?: string | undefined;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 
     constructor(data?: IUpdateTodoItemDetailCommand) {
         if (data) {
@@ -876,6 +881,7 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
             this.priority = _data["priority"];
             this.note = _data["note"];
             this.backgroundColor = _data["backgroundColor"];
+            this.tag = _data["tag"];
         }
     }
 
@@ -893,6 +899,7 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
         data["priority"] = this.priority;
         data["note"] = this.note;
         data["backgroundColor"] = this.backgroundColor;
+        data["tag"] = this.tag;
         return data;
     }
 }
@@ -903,6 +910,7 @@ export interface IUpdateTodoItemDetailCommand {
     priority?: PriorityLevel;
     note?: string | undefined;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 }
 
 export enum PriorityLevel {
@@ -1072,6 +1080,7 @@ export class TodoItemDto implements ITodoItemDto {
     priority?: number;
     note?: string | undefined;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 
     constructor(data?: ITodoItemDto) {
         if (data) {
@@ -1091,6 +1100,7 @@ export class TodoItemDto implements ITodoItemDto {
             this.priority = _data["priority"];
             this.note = _data["note"];
             this.backgroundColor = _data["backgroundColor"];
+            this.tag = _data["tag"];
         }
     }
 
@@ -1110,6 +1120,7 @@ export class TodoItemDto implements ITodoItemDto {
         data["priority"] = this.priority;
         data["note"] = this.note;
         data["backgroundColor"] = this.backgroundColor;
+        data["tag"] = this.tag;
         return data;
     }
 }
@@ -1122,6 +1133,7 @@ export interface ITodoItemDto {
     priority?: number;
     note?: string | undefined;
     backgroundColor?: string | undefined;
+    tag?: string | undefined;
 }
 
 export class CreateTodoListCommand implements ICreateTodoListCommand {

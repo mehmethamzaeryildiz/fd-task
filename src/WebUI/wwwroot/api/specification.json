@@ -473,6 +473,10 @@
           "backgroundColor": {
             "type": "string",
             "nullable": true
+          },
+          "tag": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -496,6 +500,10 @@
             "nullable": true
           },
           "backgroundColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "tag": {
             "type": "string",
             "nullable": true
           }
@@ -601,6 +609,10 @@
             "nullable": true
           },
           "backgroundColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "tag": {
             "type": "string",
             "nullable": true
           }
