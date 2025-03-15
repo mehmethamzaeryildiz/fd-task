@@ -30,10 +30,25 @@ public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
                 .ToList(),
 
             Lists = await _context.TodoLists
-                .AsNoTracking()
-                .ProjectTo<TodoListDto>(_mapper.ConfigurationProvider)
-                .OrderBy(t => t.Title)
-                .ToListAsync(cancellationToken)
-        };
+            .Where(t => !t.IsDeleted)
+            .AsNoTracking()
+            .Select(t => new TodoListDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Items = t.Items.Where(i => !i.IsDeleted).Select(i => new TodoItemDto
+                {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Done = i.Done,
+                    Priority = (int)i.Priority,
+                    Note = i.Note,
+                    BackgroundColor = i.BackgroundColor
+                }).ToList()
+            })
+            .OrderBy(t => t.Title)
+            .ToListAsync(cancellationToken),
+
+    };
     }
 }

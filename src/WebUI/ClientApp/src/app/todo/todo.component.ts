@@ -59,7 +59,6 @@ export class TodoComponent implements OnInit {
       result => {
         this.lists = result.lists;
         this.priorityLevels = result.priorityLevels;
-        debugger;
         if (this.lists.length) {
           this.selectedList = this.lists[0];
         }
@@ -149,7 +148,6 @@ export class TodoComponent implements OnInit {
 
   // Items
   showItemDetailsModal(template: TemplateRef<any>, item: TodoItemDto): void {
-    debugger;
     this.selectedItem = item;
     this.itemDetailsFormGroup.patchValue(this.selectedItem);
 
@@ -160,7 +158,6 @@ export class TodoComponent implements OnInit {
   }
 
   updateItemDetails(): void {
-    debugger;
     const item = new UpdateTodoItemDetailCommand(this.itemDetailsFormGroup.value);
     this.itemsClient.updateItemDetails(this.selectedItem.id, item).subscribe(
       () => {
